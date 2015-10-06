@@ -9,11 +9,41 @@ import java.util.Date;
 /**
  * Created by sboulet on 9/29/15.
  */
-public class TweetListTest extends ActivityInstrumentationTestCase2 {
+public class TweetListTest extends ActivityInstrumentationTestCase2 implements MyObserver{
 
     public TweetListTest() {
         super(ca.ualberta.cs.lonelytwitter.LonelyTwitterActivity.class);
     }
+    private Boolean weWereNotNotified;
+
+    public void myNotify(MyObservable observable) {
+        weWereNotNotified = Boolean.TRUE;
+    }
+
+
+    public void testObservable() {
+        TweetList list = new TweetList();
+        //needs an add observer
+        list.addObserver(this);
+        Tweet tweet = new NormalTweet("test");
+        weWereNotNotified = Boolean.FALSE;
+        list.add(tweet);
+        //we should have been notified here
+        assertTrue(weWereNotNotified);
+    }
+
+    public void testModifyTweetList() {
+        TweetList list = new TweetList();
+        //needs an add observer
+        list.addObserver(this);
+        Tweet tweet = new NormalTweet("test");
+        list.add(tweet);
+        weWereNotNotified = Boolean.FALSE;
+        tweet.setText("different text");
+        //we should have been notified here
+        assertTrue(weWereNotNotified);
+    }
+
 
     public void testHoldsStuff() {
         TweetList list = new TweetList();
@@ -43,7 +73,12 @@ public class TweetListTest extends ActivityInstrumentationTestCase2 {
         TweetList list = new TweetList();
         Tweet tweet = new NormalTweet("test");
         list.add(tweet);
-        list.add(tweet);
+        try {
+            list.add(tweet);
+            fail("Didn't cach duplicate.");
+        } catch (IllegalArgumentException e) {
+
+        }
     }
 
     public void testOrder() {
