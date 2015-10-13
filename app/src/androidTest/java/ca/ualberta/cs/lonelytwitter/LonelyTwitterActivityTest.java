@@ -91,7 +91,7 @@ public class LonelyTwitterActivityTest extends ActivityInstrumentationTestCase2 
             }
         });
         tweetText = receiverActivity.getBodyText();
-        assertEquals(tweetText, bodyText);
+        assertEquals(tweetText.getText(), bodyText.getText());
 
         // edit the text of that tweet
 
