@@ -13,8 +13,10 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,9 +28,33 @@ import com.google.gson.reflect.TypeToken;
 public class LonelyTwitterActivity extends Activity {
 
 	private static final String FILENAME = "file.sav";
+	private LonelyTwitterActivity activity = this;
+
+	private Button saveButton;
+
+	public Button getSaveButton() {
+		return saveButton;
+	}
+
+
 	private EditText bodyText;
+
+	public EditText getBodyText() {
+		return bodyText;
+	}
+
 	private ListView oldTweetsList;
+
+	public ListView getOldTweetsList() {
+		return oldTweetsList;
+	}
+
 	private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
+
+	public ArrayList<Tweet> getTweets() {
+		return tweets;
+	}
+
 	private ArrayAdapter<Tweet> adapter;
 
 	/** Called when the activity is first created. */
@@ -40,7 +66,7 @@ public class LonelyTwitterActivity extends Activity {
 
 		//all view - part of the user interface without changing state of the model
 		bodyText = (EditText) findViewById(R.id.body);
-		Button saveButton = (Button) findViewById(R.id.save);
+		saveButton = (Button) findViewById(R.id.save);
 		Button clearButton = (Button) findViewById(R.id.clear);
 		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
 
@@ -71,6 +97,13 @@ public class LonelyTwitterActivity extends Activity {
 				deleteFile(FILENAME); //model - deletes the file on the disk
 				tweets.clear(); //controller - changes the UI
 				adapter.notifyDataSetChanged(); //view - changes android's display
+			}
+		});
+
+		oldTweetsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent intent = new Intent(activity, EditTweetActivity.class);
+				startActivity(intent);
 			}
 		});
 	}
