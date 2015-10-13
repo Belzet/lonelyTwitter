@@ -4,13 +4,39 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 public class EditTweetActivity extends Activity {
+
+    private EditText bodyText;
+    private EditTweetActivity activity = this;
+
+    public EditText getBodyText() {
+        return bodyText;
+    }
+
+    public void setBodyText() {
+        int position = 0;
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            position = extras.getInt("position");
+        }
+        bodyText.setText(tweets.get(position).getText());
+    }
+
+    private ArrayList<Tweet> tweets = LonelyTwitterActivity.getTweets();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_tweet);
+
+        bodyText = (EditText) findViewById(R.id.tweet);
+        activity.setBodyText();
     }
 
     @Override

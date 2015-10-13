@@ -9,10 +9,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -36,22 +34,21 @@ public class LonelyTwitterActivity extends Activity {
 		return saveButton;
 	}
 
-
 	private EditText bodyText;
 
 	public EditText getBodyText() {
 		return bodyText;
 	}
 
-	private ListView oldTweetsList;
+	private static ListView oldTweetsList;
 
-	public ListView getOldTweetsList() {
+	public static ListView getOldTweetsList() {
 		return oldTweetsList;
 	}
 
-	private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
+	private static ArrayList<Tweet> tweets = new ArrayList<Tweet>();
 
-	public ArrayList<Tweet> getTweets() {
+	public static ArrayList<Tweet> getTweets() {
 		return tweets;
 	}
 
@@ -103,6 +100,7 @@ public class LonelyTwitterActivity extends Activity {
 		oldTweetsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent = new Intent(activity, EditTweetActivity.class);
+				intent.putExtra("position", position);
 				startActivity(intent);
 			}
 		});

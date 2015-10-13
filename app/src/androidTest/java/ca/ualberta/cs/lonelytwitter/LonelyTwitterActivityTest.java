@@ -17,6 +17,7 @@ public class LonelyTwitterActivityTest extends ActivityInstrumentationTestCase2 
 
     private EditText bodyText;
     private Button saveButton;
+    private EditText tweetText;
 
     public LonelyTwitterActivityTest() {
         super(ca.ualberta.cs.lonelytwitter.LonelyTwitterActivity.class);
@@ -72,7 +73,7 @@ public class LonelyTwitterActivityTest extends ActivityInstrumentationTestCase2 
         //Following was stolen from https://developer.android.com/training/activity-testing/activity-functional-testing.html
 
         // Validate that ReceiverActivity is started
-        EditTweetActivity receiverActivity = (EditTweetActivity)
+        final EditTweetActivity receiverActivity = (EditTweetActivity)
                 receiverActivityMonitor.waitForActivityWithTimeout(1000);
         assertNotNull("ReceiverActivity is null", receiverActivity);
         assertEquals("Monitor for ReceiverActivity has not been called",
@@ -82,6 +83,23 @@ public class LonelyTwitterActivityTest extends ActivityInstrumentationTestCase2 
 
         // Remove the ActivityMonitor
         getInstrumentation().removeMonitor(receiverActivityMonitor);
+
+        // test that the tweet being shown on the edit screen is the tweet we clicked on
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                receiverActivity.setBodyText();
+            }
+        });
+        tweetText = receiverActivity.getBodyText();
+        assertEquals(tweetText, bodyText);
+
+        // edit the text of that tweet
+
+        // save our edits
+
+        // assert that our edits were saved into the text correctly
+
+        // assert that our edits are shown on the screen to the user back in the main activity
 
         //end of test: clear the data
         //end of test: make sure the edit activity is closed
